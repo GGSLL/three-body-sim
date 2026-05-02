@@ -20,6 +20,7 @@
     <h1 class="title" data-i18n="title">三体</h1>
     <div class="subtitle" data-i18n="subtitle">THE THREE-BODY PROBLEM</div>
 
+    <a href="https://github.com/GGSLL/three-body-sim" target="_blank" class="github-link" title="GitHub">GH</a>
     <button id="langToggle" class="lang-toggle">EN</button>
     <button id="togglePanel" class="panel-toggle">☰</button>
 
@@ -52,61 +53,71 @@
                 <span data-i18n="path">轨迹</span>
             </label>
             <label class="toggle">
+                <input type="checkbox" id="velocityToggle">
+                <span data-i18n="velocity">矢速</span>
+            </label>
+            <label class="toggle">
                 <input type="checkbox" id="randomToggle" checked>
                 <span data-i18n="random">随机</span>
             </label>
         </div>
 
-        <div class="control-section">
-            <div class="section-title" data-i18n="mass">质量参数</div>
-            <div class="mass-inputs">
-                <div class="input-group">
-                    <span class="label cyan">M1</span>
-                    <input type="number" id="mass1" min="0.1" max="100" step="0.1" value="1">
-                </div>
-                <div class="input-group">
-                    <span class="label magenta">M2</span>
-                    <input type="number" id="mass2" min="0.1" max="100" step="0.1" value="1">
-                </div>
-                <div class="input-group">
-                    <span class="label yellow">M3</span>
-                    <input type="number" id="mass3" min="0.1" max="100" step="0.1" value="1">
-                </div>
-            </div>
-        </div>
-
-        <div class="control-section">
-            <div class="section-title" data-i18n="position">初始坐标</div>
-            <div class="coord-inputs">
-                <div class="input-group">
-                    <span class="label cyan">P1</span>
-                    <input type="text" id="pos1" value="-8 0 0">
-                </div>
-                <div class="input-group">
-                    <span class="label magenta">P2</span>
-                    <input type="text" id="pos2" value="4 7 0">
-                </div>
-                <div class="input-group">
-                    <span class="label yellow">P3</span>
-                    <input type="text" id="pos3" value="4 -7 0">
+        <div class="control-section collapsible collapsed">
+            <div class="section-title" data-i18n="mass">质量参数 <span class="collapse-icon">▼</span></div>
+            <div class="section-content">
+                <div class="mass-inputs">
+                    <div class="input-group">
+                        <span class="label cyan">M1</span>
+                        <input type="number" id="mass1" min="0.1" max="100" step="0.1" value="1">
+                    </div>
+                    <div class="input-group">
+                        <span class="label magenta">M2</span>
+                        <input type="number" id="mass2" min="0.1" max="100" step="0.1" value="1">
+                    </div>
+                    <div class="input-group">
+                        <span class="label yellow">M3</span>
+                        <input type="number" id="mass3" min="0.1" max="100" step="0.1" value="1">
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="control-section">
-            <div class="section-title" data-i18n="velocity">初始速度</div>
-            <div class="coord-inputs">
-                <div class="input-group">
-                    <span class="label cyan">V1</span>
-                    <input type="text" id="vel1" value="1 0.5 0">
+        <div class="control-section collapsible collapsed">
+            <div class="section-title" data-i18n="position">初始坐标 <span class="collapse-icon">▼</span></div>
+            <div class="section-content">
+                <div class="coord-inputs">
+                    <div class="input-group">
+                        <span class="label cyan">P1</span>
+                        <input type="text" id="pos1" value="-8 0 0">
+                    </div>
+                    <div class="input-group">
+                        <span class="label magenta">P2</span>
+                        <input type="text" id="pos2" value="4 7 0">
+                    </div>
+                    <div class="input-group">
+                        <span class="label yellow">P3</span>
+                        <input type="text" id="pos3" value="4 -7 0">
+                    </div>
                 </div>
-                <div class="input-group">
-                    <span class="label magenta">V2</span>
-                    <input type="text" id="vel2" value="-0.5 -0.3 0">
-                </div>
-                <div class="input-group">
-                    <span class="label yellow">V3</span>
-                    <input type="text" id="vel3" value="-0.5 -0.2 0">
+            </div>
+        </div>
+
+        <div class="control-section collapsible collapsed">
+            <div class="section-title" data-i18n="velocity">初始速度 <span class="collapse-icon">▼</span></div>
+            <div class="section-content">
+                <div class="coord-inputs">
+                    <div class="input-group">
+                        <span class="label cyan">V1</span>
+                        <input type="text" id="vel1" value="1 0.5 0">
+                    </div>
+                    <div class="input-group">
+                        <span class="label magenta">V2</span>
+                        <input type="text" id="vel2" value="-0.5 -0.3 0">
+                    </div>
+                    <div class="input-group">
+                        <span class="label yellow">V3</span>
+                        <input type="text" id="vel3" value="-0.5 -0.2 0">
+                    </div>
                 </div>
             </div>
         </div>

@@ -4,7 +4,8 @@ A Three.js-based visualization of the three-body problem, using the 4th-order Ru
 
 ## Quick Start
 
-Open `index.html` directly in your browser.
+- **Online**: https://gmydwz.dpdns.org
+- **Local**: Open `index.html` directly in your browser.
 
 ## File Structure
 
@@ -31,7 +32,9 @@ three-body-sim/
 - **Speed** - 1x ~ 100x
 - **Trail Toggle** - Show/hide short trail
 - **Path Toggle** - Show/hide long trajectory
+- **Vel Toggle** - Show/hide velocity vectors
 - **Random Toggle** - Random or custom initial conditions
+- **GitHub** - Jump to project repository
 
 ### Internationalization
 - **Language Toggle** - Chinese/English bilingual support

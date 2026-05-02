@@ -29,6 +29,7 @@ const i18n = {
     speed: '模拟速度',
     trail: '拖尾',
     path: '轨迹',
+    velocity: '矢速',
     random: '随机',
     mass: '质量参数',
     position: '初始坐标',
@@ -51,6 +52,7 @@ const i18nEn = {
     speed: 'Speed',
     trail: 'Trail',
     path: 'Path',
+    velocity: 'Vel',
     random: 'Random',
     mass: 'Mass',
     position: 'Position',
@@ -72,12 +74,26 @@ function toggleLang() {
     });
 
     document.getElementById('langToggle').textContent = isLangEN ? '中' : 'EN';
+    updatePlayBtnText();
+}
 
-    if (!isPlaying) {
-        document.getElementById('playPauseBtn').textContent = isLangEN ? 'Play' : '播放';
-    } else {
-        document.getElementById('playPauseBtn').textContent = isLangEN ? 'Pause' : '暂停';
-    }
+function updatePlayBtnText() {
+    const playText = isPlaying ? (isLangEN ? 'Pause' : '暂停') : (isLangEN ? 'Play' : '播放');
+    document.getElementById('playPauseBtn').textContent = playText;
+}
+
+function toggleUIVisibility(show) {
+    const elements = ['.title', '.subtitle', '.lang-toggle', '.github-link', '.ai-badge'];
+    elements.forEach(sel => {
+        const el = document.querySelector(sel);
+        if (el) {
+            if (show) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+    });
 }
 
 const G = 200;
@@ -88,6 +104,7 @@ let isPlaying = false;
 let speed = 1;
 let showTrail = true;
 let showPath = true;
+let showVelocity = false;
 
 const colors = [0x70c0d0, 0xd070a0, 0xd0b070];
 const bodies = [];
@@ -154,7 +171,19 @@ function createBody(pos, color) {
     const path = new THREE.Line(pathGeo, pathMat);
     scene.add(path);
 
-    return { mesh: group, trail, path, trailArr: [], pathArr: [] };
+    const velGeo = new THREE.BufferGeometry();
+    velGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([0,0,0, 0,0,0]), 3));
+    const velMat = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9 });
+    const velocityLine = new THREE.Line(velGeo, velMat);
+    velocityLine.visible = false;
+    scene.add(velocityLine);
+
+    const arrowDir = new THREE.Vector3(1, 0, 0);
+    const arrowHelper = new THREE.ArrowHelper(arrowDir, pos, 0, color, 1.5, 1);
+    arrowHelper.visible = false;
+    scene.add(arrowHelper);
+
+    return { mesh: group, trail, path, velocityLine, arrowHelper, trailArr: [], pathArr: [] };
 }
 
 function parseCoord(str, fallback) {
@@ -282,6 +311,25 @@ function updateTrails() {
         b.path.geometry.attributes.position.needsUpdate = true;
         b.path.geometry.setDrawRange(0, b.pathArr.length);
         b.path.visible = showPath;
+
+        const speed = b.velocity.length();
+        const vel = b.velocity.clone().normalize();
+        const velScale = Math.min(speed * 4, 12);
+        const velArr = b.velocityLine.geometry.attributes.position.array;
+        velArr[0] = p.x;
+        velArr[1] = p.y;
+        velArr[2] = p.z;
+        velArr[3] = p.x + vel.x * velScale;
+        velArr[4] = p.y + vel.y * velScale;
+        velArr[5] = p.z + vel.z * velScale;
+        b.velocityLine.geometry.attributes.position.needsUpdate = true;
+        b.velocityLine.visible = showVelocity;
+
+        b.arrowHelper.position.copy(p);
+        b.arrowHelper.setDirection(vel);
+        const arrowLen = Math.min(speed * 3.2, 10);
+        b.arrowHelper.setLength(arrowLen, 1.2, 0.8);
+        b.arrowHelper.visible = showVelocity;
     });
 }
 
@@ -302,6 +350,8 @@ function init() {
         scene.remove(b.mesh);
         scene.remove(b.trail);
         scene.remove(b.path);
+        scene.remove(b.velocityLine);
+        scene.remove(b.arrowHelper);
     });
     bodies.length = 0;
 
@@ -365,25 +415,23 @@ function tick() {
 document.getElementById('resetBtn').onclick = () => {
     init();
     isPlaying = false;
-    const playText = isLangEN ? 'Play' : '播放';
-    document.getElementById('playPauseBtn').textContent = playText;
+    toggleUIVisibility(true);
+    updatePlayBtnText();
 };
 
 document.getElementById('applyBtn').onclick = () => {
     const wasPlaying = isPlaying;
-    if (isPlaying) {
-        isPlaying = false;
-    }
+    isPlaying = false;
     init();
     isPlaying = wasPlaying;
-    if (wasPlaying) {
-        document.getElementById('playPauseBtn').textContent = '暂停';
-    }
+    toggleUIVisibility(!isPlaying);
+    updatePlayBtnText();
 };
 
 document.getElementById('playPauseBtn').onclick = () => {
     isPlaying = !isPlaying;
-    document.getElementById('playPauseBtn').textContent = isPlaying ? '暂停' : '播放';
+    toggleUIVisibility(!isPlaying);
+    updatePlayBtnText();
 };
 
 document.getElementById('speedSlider').oninput = (e) => {
@@ -393,6 +441,7 @@ document.getElementById('speedSlider').oninput = (e) => {
 
 document.getElementById('trailToggle').onchange = (e) => showTrail = e.target.checked;
 document.getElementById('pathToggle').onchange = (e) => showPath = e.target.checked;
+document.getElementById('velocityToggle').onchange = (e) => showVelocity = e.target.checked;
 document.getElementById('randomToggle').onchange = () => init();
 
 document.getElementById('togglePanel').onclick = () => {
@@ -415,6 +464,12 @@ controls.addEventListener('start', () => {
 
 controls.addEventListener('end', () => {
     canvas.classList.remove('dragging');
+});
+
+document.querySelectorAll('.section-title').forEach(title => {
+    title.addEventListener('click', () => {
+        title.parentElement.classList.toggle('collapsed');
+    });
 });
 
 window.onresize = () => {

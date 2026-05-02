@@ -73,7 +73,13 @@ html, body {
     animation: titleShimmer 3s ease-in-out infinite, titleFloat 6s ease-in-out infinite;
     filter: drop-shadow(0 0 20px rgba(100, 180, 200, 0.5)) drop-shadow(0 0 40px rgba(80, 140, 180, 0.3));
     padding: 10px 30px;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, opacity 0.5s ease;
+    opacity: 1;
+}
+
+.title.hidden {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .title.glow-outer {
@@ -122,6 +128,42 @@ html, body {
     box-shadow: 0 0 15px rgba(100, 120, 150, 0.3);
 }
 
+.lang-toggle.hidden, .github-link.hidden, .ai-badge.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.github-link {
+    position: fixed;
+    top: 35px;
+    right: 105px;
+    background: rgba(8, 12, 20, 0.8);
+    border: 1px solid rgba(80, 90, 110, 0.4);
+    color: #6a7a8a;
+    font-size: 11px;
+    padding: 6px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    z-index: 101;
+    font-family: 'Consolas', monospace;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease, opacity 0.5s ease;
+    opacity: 1;
+}
+
+.github-link:hover {
+    background: rgba(20, 30, 45, 0.9);
+    border-color: rgba(100, 120, 150, 0.5);
+    color: #9aacbc;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(100, 120, 150, 0.3);
+}
+
 .subtitle {
     position: fixed;
     top: calc(clamp(32px, 8vw, 56px) + 50px);
@@ -133,6 +175,12 @@ html, body {
     text-transform: uppercase;
     z-index: 100;
     font-weight: 300;
+    transition: opacity 0.5s ease;
+    opacity: 1;
+}
+
+.subtitle.hidden {
+    opacity: 0;
 }
 
 #controls {
@@ -348,6 +396,40 @@ html, body {
     color: #5a6a7a;
     letter-spacing: 2px;
     margin-bottom: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    transition: color 0.2s ease;
+}
+
+.section-title:hover {
+    color: #7a8a9a;
+}
+
+.collapse-icon {
+    font-size: 8px;
+    transition: transform 0.3s ease;
+    color: #4a5a6a;
+}
+
+.control-section.collapsed .collapse-icon {
+    transform: rotate(-90deg);
+}
+
+.control-section.collapsed .section-content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.section-content {
+    max-height: 200px;
+    opacity: 1;
+    transition: max-height 0.3s ease, opacity 0.3s ease, margin 0.3s ease;
+    margin-bottom: 10px;
 }
 
 .mass-inputs, .coord-inputs {
@@ -522,12 +604,19 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
     .subtitle {
-        letter-spacing: 3px;
-        top: 48px;
+        letter-spacing: 2px;
+        top: 65px;
     }
 
     .lang-toggle {
-        top: 22px;
+        top: 15px;
+        right: 15px;
+        padding: 5px 8px;
+        font-size: 10px;
+    }
+
+    .github-link {
+        top: 15px;
         right: 55px;
         padding: 5px 8px;
         font-size: 10px;
@@ -537,6 +626,14 @@ input[type="number"]::-webkit-outer-spin-button {
         display: flex;
         align-items: center;
         justify-content: center;
+        top: 15px;
+        right: 100px;
+    }
+
+    .title {
+        padding: 8px 15px;
+        top: 15px;
+        letter-spacing: 6px;
     }
 
     #controls {
@@ -545,11 +642,75 @@ input[type="number"]::-webkit-outer-spin-button {
         width: auto;
         max-width: none;
         padding: 12px;
-        top: 70px;
+        top: 80px;
+        max-height: calc(100vh - 120px);
     }
 
     .btn {
-        padding: 12px 10px;
+        padding: 10px 8px;
+        font-size: 11px;
+    }
+
+    .control-row {
+        gap: 4px;
+    }
+
+    .slider-row input[type="range"] {
+        max-width: 80px;
+    }
+
+    .toggle-row {
+        gap: 8px;
+        justify-content: space-between;
+    }
+
+    .toggle {
+        font-size: 9px;
+    }
+
+    .section-title {
+        font-size: 9px;
+    }
+
+    .input-group .label {
+        font-size: 9px;
+        width: 20px;
+    }
+
+    .input-group input {
+        padding: 5px 6px;
+        font-size: 10px;
+    }
+
+    input[type="number"] {
+        width: 45px;
+    }
+
+    .status-bar {
+        padding-top: 6px;
+        margin-top: 6px;
+    }
+
+    .status-label, .dist-label {
+        font-size: 9px;
+    }
+
+    .status-value, .dist-value {
+        font-size: 10px;
+    }
+
+    .dist-item {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .status-item.distances {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .ai-badge {
+        font-size: 9px;
     }
 
     input[type="number"] {
@@ -581,4 +742,6 @@ input[type="number"]::-webkit-outer-spin-button {
     z-index: 100;
     letter-spacing: 1px;
     font-family: 'Consolas', monospace;
+    transition: opacity 0.5s ease;
+    opacity: 1;
 }
