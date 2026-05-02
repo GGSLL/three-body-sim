@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>三体 - ThreeBody</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+<body>
+    <div id="stars"></div>
+
+    <h1 class="title" data-i18n="title">三体</h1>
+    <div class="subtitle" data-i18n="subtitle">THE THREE-BODY PROBLEM</div>
+
+    <button id="langToggle" class="lang-toggle">EN</button>
+    <button id="togglePanel" class="panel-toggle">☰</button>
+
+    <div id="controls" class="panel-open">
+        <div class="control-header">
+            <span class="status-dot"></span>
+            <span data-i18n="controls">控制面板</span>
+        </div>
+
+        <div class="control-row">
+            <button id="resetBtn" class="btn" data-i18n="reset">重置</button>
+            <button id="playPauseBtn" class="btn primary" data-i18n="play">开始</button>
+            <button id="applyBtn" class="btn" data-i18n="apply">应用</button>
+            <button id="screenshotBtn" class="btn" title="Screenshot">📷</button>
+        </div>
+
+        <div class="control-row slider-row">
+            <label data-i18n="speed">模拟速度</label>
+            <input type="range" id="speedSlider" min="1" max="100" value="1">
+            <span id="speedValue">1x</span>
+        </div>
+
+        <div class="control-row toggle-row">
+            <label class="toggle">
+                <input type="checkbox" id="trailToggle" checked>
+                <span data-i18n="trail">拖尾</span>
+            </label>
+            <label class="toggle">
+                <input type="checkbox" id="pathToggle" checked>
+                <span data-i18n="path">轨迹</span>
+            </label>
+            <label class="toggle">
+                <input type="checkbox" id="randomToggle" checked>
+                <span data-i18n="random">随机</span>
+            </label>
+        </div>
+
+        <div class="control-section">
+            <div class="section-title" data-i18n="mass">质量参数</div>
+            <div class="mass-inputs">
+                <div class="input-group">
+                    <span class="label cyan">M1</span>
+                    <input type="number" id="mass1" min="0.1" max="100" step="0.1" value="1">
+                </div>
+                <div class="input-group">
+                    <span class="label magenta">M2</span>
+                    <input type="number" id="mass2" min="0.1" max="100" step="0.1" value="1">
+                </div>
+                <div class="input-group">
+                    <span class="label yellow">M3</span>
+                    <input type="number" id="mass3" min="0.1" max="100" step="0.1" value="1">
+                </div>
+            </div>
+        </div>
+
+        <div class="control-section">
+            <div class="section-title" data-i18n="position">初始坐标</div>
+            <div class="coord-inputs">
+                <div class="input-group">
+                    <span class="label cyan">P1</span>
+                    <input type="text" id="pos1" value="-8 0 0">
+                </div>
+                <div class="input-group">
+                    <span class="label magenta">P2</span>
+                    <input type="text" id="pos2" value="4 7 0">
+                </div>
+                <div class="input-group">
+                    <span class="label yellow">P3</span>
+                    <input type="text" id="pos3" value="4 -7 0">
+                </div>
+            </div>
+        </div>
+
+        <div class="control-section">
+            <div class="section-title" data-i18n="velocity">初始速度</div>
+            <div class="coord-inputs">
+                <div class="input-group">
+                    <span class="label cyan">V1</span>
+                    <input type="text" id="vel1" value="1 0.5 0">
+                </div>
+                <div class="input-group">
+                    <span class="label magenta">V2</span>
+                    <input type="text" id="vel2" value="-0.5 -0.3 0">
+                </div>
+                <div class="input-group">
+                    <span class="label yellow">V3</span>
+                    <input type="text" id="vel3" value="-0.5 -0.2 0">
+                </div>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-item distances">
+                <span class="dist-item"><span class="dist-label" data-i18n="d12">d12</span><span id="dist12" class="dist-value">--</span></span>
+                <span class="dist-item"><span class="dist-label" data-i18n="d23">d23</span><span id="dist23" class="dist-value">--</span></span>
+                <span class="dist-item"><span class="dist-label" data-i18n="d31">d31</span><span id="dist31" class="dist-value">--</span></span>
+            </div>
+            <div class="status-item">
+                <span class="status-label" data-i18n="energy">能量漂移</span>
+                <span id="energyDrift" class="status-value">0.00%</span>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+    <div class="ai-badge" data-i18n="aiBadge">⚠️ AI 生成</div>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
