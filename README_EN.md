@@ -4,7 +4,7 @@ A Three.js-based visualization of the three-body problem, using the 4th-order Ru
 
 ## Quick Start
 
-- **Online**: https://gmydwz.dpdns.org
+- **Online**: https://threeeebody.ct.ws
 - **Local**: Open `index.html` directly in your browser.
 
 ## File Structure
