@@ -4,7 +4,7 @@
 
 ## 快速开始
 
-- **在线访问**: https://gmydwz.dpdns.org
+- **在线访问**: https://threeeebody.ct.ws
 - **本地运行**: 直接在浏览器中打开 `index.html`。
 
 ## 文件结构
